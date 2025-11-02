@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package radiosveglia;
-
+import java.time.LocalTime;
 /**
  *
  * @author sarap
@@ -21,6 +21,13 @@ public class radioS extends javax.swing.JFrame {
         initComponents();
         
         s = new Sveglia();
+        
+       
+        new javax.swing.Timer(60000, e -> {
+            LocalTime ora = LocalTime.parse(jLabelorasveglia.getText());
+        ora = ora.plusMinutes(1);
+        jLabelorasveglia.setText(ora.toString().substring(0,5)); // formato HH:mm
+        }).start();
     }
     
     /**
@@ -473,9 +480,9 @@ public class radioS extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        s.setGiorno(jTextFieldgiorno.getText());
-        s.setMese(jTextFieldmese.getText());
-        s.setAnno(jTextFieldanno.getText());
+        s.setGiorno(Integer.parseInt(jTextFieldgiorno.getText()));
+        s.setMese(Integer.parseInt(jTextFieldmese.getText()));
+        s.setAnno(Integer.parseInt(jTextFieldanno.getText()));
         jLabeldata.setText(s.getGiorno() + " / " + s.getMese() + " / " + s.getAnno() );
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -490,7 +497,10 @@ public class radioS extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonabbassavolumeActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+        s.impostaRandomicamente();
+        jLabeldata.setText(s.contZero(s.getGiorno()) + " / " + s.contZero(s.getMese()) + " / " + s.getAnno() );
+        jLabelsveglia.setText(s.getSveglia());
+        jLabelorasveglia.setText(s.getOra());
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
