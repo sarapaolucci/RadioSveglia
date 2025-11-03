@@ -24,11 +24,18 @@ public class radioS extends javax.swing.JFrame {
         
        
         new javax.swing.Timer(60000, e -> {
-            LocalTime ora = LocalTime.parse(jLabelorasveglia.getText());
+        
+        LocalTime ora = LocalTime.parse(jLabelorasveglia.getText());
         ora = ora.plusMinutes(1);
-        jLabelorasveglia.setText(ora.toString().substring(0,5)); // formato HH:mm
+        
+        jLabelorasveglia.setText(ora.toString().substring(0,5));
+        if (jLabelsveglia.getText().equals(jLabelorasveglia.getText())) {
+            String stazione = (String) jComboBox1.getSelectedItem();
+            s.suonaSveglia(stazione);
+    }
         }).start();
     }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,14 +47,13 @@ public class radioS extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        jButtonstazione = new javax.swing.JButton();
         jTextFieldora = new javax.swing.JTextField();
         jTextFieldsveglia = new javax.swing.JTextField();
         jTextFieldanno = new javax.swing.JTextField();
@@ -72,32 +78,33 @@ public class radioS extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
-
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Imprint MT Shadow", 1, 36)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(102, 0, 204));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Radio Sveglia");
-        jTextArea1.setAlignmentX(5.0F);
-        jTextArea1.setAlignmentY(5.0F);
-        jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
 
         jButton1.setBackground(new java.awt.Color(153, 102, 255));
         jButton1.setFont(new java.awt.Font("Imprint MT Shadow", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Elimina");
         jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(153, 102, 255));
         jButton2.setFont(new java.awt.Font("Imprint MT Shadow", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Rinvia");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(153, 153, 255));
         jButton3.setFont(new java.awt.Font("Imprint MT Shadow", 1, 18)); // NOI18N
@@ -139,10 +146,15 @@ public class radioS extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setBackground(new java.awt.Color(153, 153, 255));
-        jButton7.setFont(new java.awt.Font("Imprint MT Shadow", 1, 18)); // NOI18N
-        jButton7.setText("Cambia Stazione");
-        jButton7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 204), 2, true));
+        jButtonstazione.setBackground(new java.awt.Color(153, 153, 255));
+        jButtonstazione.setFont(new java.awt.Font("Imprint MT Shadow", 1, 18)); // NOI18N
+        jButtonstazione.setText("Cambia Stazione");
+        jButtonstazione.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 204), 2, true));
+        jButtonstazione.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonstazioneActionPerformed(evt);
+            }
+        });
 
         jTextFieldora.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextFieldora.setText("00:00");
@@ -175,7 +187,7 @@ public class radioS extends javax.swing.JFrame {
         jTextFieldmese.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RTL 102.5", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RTL 102.5", "Radio 105", "Radio 24", "Radio m2o" }));
         jComboBox1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         jComboBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -264,6 +276,10 @@ public class radioS extends javax.swing.JFrame {
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator4.setPreferredSize(new java.awt.Dimension(100, 10));
 
+        jLabel2.setFont(new java.awt.Font("Imprint MT Shadow", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 0, 204));
+        jLabel2.setText("Radio Sveglia");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -330,19 +346,18 @@ public class radioS extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(45, 45, 45)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
+                                .addGap(55, 55, 55)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(120, 120, 120)
                                         .addComponent(jLabelorasveglia))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(45, 45, 45))))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(27, 48, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +369,7 @@ public class radioS extends javax.swing.JFrame {
                                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(71, 71, 71))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonstazione, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(47, 47, 47)))))))
@@ -389,9 +404,9 @@ public class radioS extends javax.swing.JFrame {
                             .addComponent(jLabel1)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGap(27, 27, 27)
-                            .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
+                            .addGap(35, 35, 35)
+                            .addComponent(jLabel2)
+                            .addGap(37, 37, 37)
                             .addComponent(jLabelorasveglia))
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -422,7 +437,7 @@ public class radioS extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 8, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton7)
+                                    .addComponent(jButtonstazione)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -437,7 +452,7 @@ public class radioS extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 677, Short.MAX_VALUE)
+            .addGap(0, 688, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -477,6 +492,7 @@ public class radioS extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         s.setSveglia(jTextFieldsveglia.getText());
         jLabelsveglia.setText(s.getSveglia());
+        
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -502,6 +518,23 @@ public class radioS extends javax.swing.JFrame {
         jLabelsveglia.setText(s.getSveglia());
         jLabelorasveglia.setText(s.getOra());
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButtonstazioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonstazioneActionPerformed
+        String selezionata = (String) jComboBox1.getSelectedItem();
+        s.cambiaStazione(selezionata);
+        jLabelstazione.setText(s.getStazione());
+        jLabelfrequenza.setText(String.valueOf(s.getFrequenza()));
+    }//GEN-LAST:event_jButtonstazioneActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        s.interrompiWav();
+        s.rinvia();
+        jLabelsveglia.setText(s.getSveglia());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        s.interrompiWav();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -535,11 +568,12 @@ public class radioS extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButtonabbassavolume;
     private javax.swing.JButton jButtonaumentavolume;
+    private javax.swing.JButton jButtonstazione;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -556,7 +590,6 @@ public class radioS extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldanno;
     private javax.swing.JTextField jTextFieldgiorno;
     private javax.swing.JTextField jTextFieldmese;

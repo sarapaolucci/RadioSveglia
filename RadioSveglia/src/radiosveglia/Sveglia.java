@@ -4,13 +4,17 @@
  */
 package radiosveglia;
 import java.util.Random;
+import javax.sound.sampled.*;
+
 /**
  *
  * @author sarap
  */
 public class Sveglia {
     private int volume, minuti, ore, giorno, mese, anno, hSveglia, mSveglia;
-    private String ora, sveglia;
+    private String ora, sveglia, radio, stazioneRadio;
+    private double frequenza;
+    Clip clip;
     
     Random random = new Random();
     
@@ -40,10 +44,16 @@ public class Sveglia {
     
     public void setSveglia(String s){
         this.sveglia = s;
+        String [] tempos = sveglia.split(":");
+        this.mSveglia = Integer.parseInt(tempos[1]);
+        this.hSveglia = Integer.parseInt(tempos[0]);
     }
     
     public void setOra(String o){
         this.ora = o;
+        String [] tempo = ora.split(":");
+        this.minuti = Integer.parseInt(tempo[1]);
+        this.ore = Integer.parseInt(tempo[0]);
     }
     
     public void setGiorno(int g){
@@ -74,10 +84,22 @@ public class Sveglia {
         return this.anno;
     }
     
-    public void impostaOra(){
-        String [] tempo = ora.split(":");
-        this.minuti = Integer.parseInt(tempo[1]);
-        this.ore = Integer.parseInt(tempo[0]);
+    public double getFrequenza(){
+        return this.frequenza;
+    }
+    
+    public String getStazione(){
+        return this.stazioneRadio;
+    }
+    
+    
+    public void rinvia(){
+        this.mSveglia += 5;
+        if(mSveglia >= 60){
+            mSveglia = mSveglia % 60;
+            hSveglia++;
+        }
+        this.sveglia = contZero(hSveglia) + ":" + contZero(mSveglia);
     }
 
     public void impostaRandomicamente(){
@@ -99,17 +121,10 @@ public class Sveglia {
         }
         this.ore = random.nextInt(0,24);
         this.minuti = random.nextInt(0,60);
-        this.ora = controllaZero(ore) + ":" + controllaZero(minuti);
+        this.ora = contZero(ore) + ":" + contZero(minuti);
         this.hSveglia = random.nextInt(0,24);
         this.mSveglia = random.nextInt(0,60);
-        this.sveglia = controllaZero(hSveglia) + ":" + controllaZero(mSveglia);
-    }
-
-    private String controllaZero (int z){
-        if(z < 10){
-            return "0" + String.valueOf(z);
-        }
-        return String.valueOf(z);
+        this.sveglia = contZero(hSveglia) + ":" + contZero(mSveglia);
     }
     
     public String contZero (int z){
@@ -117,6 +132,56 @@ public class Sveglia {
             return "0" + String.valueOf(z);
         }
         return String.valueOf(z);
+    }
+    
+    public void cambiaStazione(String stazione){
+        this.radio = stazione;
+        switch (stazione) {
+            case "RTL 102.5" -> {
+                this.frequenza = 24.3;
+                this.stazioneRadio = "RTL 102.5";
+            }
+            case "Radio 105" -> {
+                this.frequenza = 26.2;
+                this.stazioneRadio = "Radio 105";
+            }
+            case "Radio 24" -> {
+                this.frequenza = 24.0;
+                this.stazioneRadio = "Radio 24";
+            }
+            default -> {
+                this.frequenza = 12.3;
+                this.stazioneRadio = "Radio m2o";
+            }
+        }
+    }
+    
+    public void riproduciWav(String nomeFile) {
+    try {
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/suoni/" + nomeFile));
+        this.clip = AudioSystem.getClip();
+        clip.open(audioIn);
+        clip.start();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    }
+    
+    
+    public void interrompiWav() {
+        if (this.clip != null && this.clip.isRunning()) {
+           clip.stop();             
+           clip.setFramePosition(0); 
+        }
+    }
+    
+    public void suonaSveglia(String stazione){
+        switch (stazione) {
+            case "RTL 102.5" -> riproduciWav("nickyminaj.wav");
+            case "Radio 105" -> riproduciWav("spann.wav");
+            case "Radio 24" -> riproduciWav("heartless.wav");
+            default -> riproduciWav("pokerface.wav");
+        }
     }
     
 }
