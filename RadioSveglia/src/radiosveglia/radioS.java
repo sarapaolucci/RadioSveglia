@@ -21,7 +21,8 @@ public class radioS extends javax.swing.JFrame {
         initComponents();
         
         s = new Sveglia();
-        
+        jButton2.setEnabled(false);
+        jButton1.setEnabled(false);
        
         new javax.swing.Timer(60000, e -> {
         
@@ -30,9 +31,15 @@ public class radioS extends javax.swing.JFrame {
         
         jLabelorasveglia.setText(ora.toString().substring(0,5));
         if (jLabelsveglia.getText().equals(jLabelorasveglia.getText())) {
+            jButton2.setEnabled(true);
+            jButton1.setEnabled(true);
             String stazione = (String) jComboBox1.getSelectedItem();
             s.suonaSveglia(stazione);
-    }
+        }
+        if(jLabelorasveglia.getText().equals("00:00")){
+            s.aggiornaData();
+            jLabeldata.setText(s.getGiorno() + " / " + s.getMese() + " / " + s.getAnno() );
+        }
         }).start();
     }
     
@@ -530,10 +537,13 @@ public class radioS extends javax.swing.JFrame {
         s.interrompiWav();
         s.rinvia();
         jLabelsveglia.setText(s.getSveglia());
+        jButton2.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         s.interrompiWav();
+        jLabelsveglia.setText("Imposta Sveglia");
+        jButton1.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

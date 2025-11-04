@@ -14,6 +14,7 @@ public class Sveglia {
     private int volume, minuti, ore, giorno, mese, anno, hSveglia, mSveglia;
     private String ora, sveglia, radio, stazioneRadio;
     private double frequenza;
+    private FloatControl volumeCont;
     Clip clip;
     
     Random random = new Random();
@@ -22,12 +23,14 @@ public class Sveglia {
         if(volume != 10){
             volume++;
         }
+        aggiornaVolume();
     }
     
     public void diminuisciVolume(){
         if(volume > 0){
             volume--;
         }
+        aggiornaVolume();
     }
     
     public void setVolume(int v){
@@ -92,12 +95,55 @@ public class Sveglia {
         return this.stazioneRadio;
     }
     
+    public void aggiornaVolume(){
+        if(volumeCont != null){
+            float min = volumeCont.getMinimum();
+            float max = volumeCont.getMaximum();
+            float range = max - min;
+            float newVolume = min+(range*(volume / 10.0f));
+            
+            volumeCont.setValue(newVolume);
+        }
+        
+    }
     
-    public void rinvia(){
+    public void aggiornaData(){
+        giorno++;
+        if(mese == 2 && anno % 4 == 0 && giorno == 30){
+            mese++;
+            giorno = 1;
+        }
+        else if(mese == 2 && giorno == 29){
+            mese++;
+            giorno = 1;
+        }
+        else if(mese == 11 || mese == 4 || mese == 6 || mese == 9){
+            if(giorno == 31){
+                mese++;
+                giorno = 1;
+            }
+        }
+        else{
+            if(giorno == 32){
+                mese++;
+                giorno = 1;
+                if(mese == 12){
+                    mese = 1;
+                    anno++;
+                    giorno = 1;
+                }
+            }
+        }
+    }
+    
+    public void rinvia(){ 
         this.mSveglia += 5;
         if(mSveglia >= 60){
             mSveglia = mSveglia % 60;
             hSveglia++;
+            if(hSveglia > 23){
+                hSveglia = 0;
+            }
         }
         this.sveglia = contZero(hSveglia) + ":" + contZero(mSveglia);
     }
